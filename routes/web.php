@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EventController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,11 +19,10 @@ Route::get('/', function () {
 });
 
 Route::prefix('manager')
-    ->middleware('can:manager-higher')->group(function () {
-        Route::get('index', function () {
-            dd('manager');
-        });
-    });
+    ->middleware('can:manager-higher')
+    ->group(function () {
+        Route::resource('events', EventController::class);
+});
 
 Route::middleware('can:user-higher')->group(function () {
     Route::get('index', function () {
