@@ -6,6 +6,7 @@ use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Models\Event;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class EventController extends Controller
 {
@@ -17,8 +18,8 @@ class EventController extends Controller
     public function index()
     {
         $events = DB::table('events')
-        ->orderBy('start_date', 'asc') //開始日時順
-        ->paginate(10); // 10件ずつ
+            ->orderBy('start_date', 'asc') //開始日時順
+            ->paginate(10); // 10件ずつ
 
         return view('manager.events.index', compact('events')); //変数をViewに渡す
     }
@@ -41,7 +42,29 @@ class EventController extends Controller
      */
     public function store(StoreEventRequest $request)
     {
-        dd($request);
+        //入力されたイベントの開始日付けと開始時間をくっつける
+        $start = $request['event_date'] . " " . $request['start_time'];
+        //carbonを使って年月日時に変換
+        $startDate = Carbon::createFromFormat('Y-m-d H:i', $start);
+
+        $end = $request['event_date'] . " " . $request['end_time'];
+        $endDate = Carbon::createFromFormat('Y-m-d H:i', $end);
+
+        //DBへ値を保存
+        Event::create([
+            'name' => $request['event_name'],
+            'information' => $request['information'],
+            'start_date' => $startDate,
+            'end_date' => $endDate,
+            'max_people' => $request['max_people'],
+            'is_visible' => $request['is_visible'],
+        ]);
+
+        //セッションにメッセージ保存
+        session()->flash('status', '登録okです');
+
+        //リダイレクト
+        return to_route('events.index');
     }
 
     /**
