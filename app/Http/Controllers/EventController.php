@@ -42,13 +42,19 @@ class EventController extends Controller
      */
     public function store(StoreEventRequest $request)
     {
-        //入力されたイベントの開始日付けと開始時間をくっつける
-        $start = $request['event_date'] . " " . $request['start_time'];
-        //carbonを使って年月日時に変換
-        $startDate = Carbon::createFromFormat('Y-m-d H:i', $start);
+        $check = EventServices::checkEventDuplication(
+            $request['event_date'],
+            $request['start_time'],
+            $request['end_time']
+        );
+        
+        if ($check) { // 存在したら
+            session()->flash('status', 'この時間帯は既に他の予約が存在します。');
+            return view('manager.events.create');
+        }
 
-        $end = $request['event_date'] . " " . $request['end_time'];
-        $endDate = Carbon::createFromFormat('Y-m-d H:i', $end);
+        $startDate = EventServices::joinDateAndTime($request['event_date'], $request['start_time']);
+        $endDate = EventServices::joinDateAndTime($request['event_date'], $request['end_time']);
 
         //DBへ値を保存
         Event::create([
