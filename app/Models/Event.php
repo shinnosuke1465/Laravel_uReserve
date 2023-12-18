@@ -29,6 +29,14 @@ class Event extends Model
         );
     }
 
+    //edit用のイベント日時
+    protected function editEventDate(): Attribute
+    {
+        return new Attribute(
+            //eventモデルのstart_dateの内容を年月日の形で表示する
+            get: fn () => Carbon::parse($this->start_date)->format('Y-m-d')
+        );
+    }
     //イベント開始時間
     protected function startTime(): Attribute
     {
