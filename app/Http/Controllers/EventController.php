@@ -47,7 +47,7 @@ class EventController extends Controller
             $request['start_time'],
             $request['end_time']
         );
-        
+
         if ($check) { // 存在したら
             session()->flash('status', 'この時間帯は既に他の予約が存在します。');
             return view('manager.events.create');
@@ -80,9 +80,15 @@ class EventController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Event $event)
-    {
-        //
-    }
+{
+    $event = Event::findOrFail($event->id);
+		//イベントの日付を取れる
+		$eventDate = $event->eventDate;
+		$startTime = $event->startTime;
+		$endTime = $event->endTime;
+
+		return view('manager.events.show', compact('event', 'eventDate', 'startTime', 'endTime'));
+ }
 
     /**
      * Show the form for editing the specified resource.
