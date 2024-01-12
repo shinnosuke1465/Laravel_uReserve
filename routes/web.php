@@ -23,7 +23,7 @@ Route::prefix('manager')
     ->group(function () {
         Route::get('events/past', [EventController::class, 'past'])->name('events.past');
         Route::resource('events', EventController::class);
-});
+    });
 
 Route::middleware('can:user-higher')->group(function () {
     Route::get('index', function () {
