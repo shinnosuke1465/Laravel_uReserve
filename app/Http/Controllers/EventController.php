@@ -112,7 +112,6 @@ class EventController extends Controller
             ];
             array_push($reservations, $reservedInfo); // 連想配列に追加
         }
-        // dd($reservations);
 
         //イベントの日付を取れる
         $eventDate = $event->eventDate;
