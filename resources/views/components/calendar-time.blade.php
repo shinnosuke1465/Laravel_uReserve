@@ -22,4 +22,4 @@
     <div class="py-1 px-2 h-8 border border-gray-200">19:00</div>
     <div class="py-1 px-2 h-8 border border-gray-200">19:30</div>
     <div class="py-1 px-2 h-8 border border-gray-200">20:00</div>
-   </div>
+</div>
