@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\ReservationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,18 +26,17 @@ Route::prefix('manager')
         Route::resource('events', EventController::class);
     });
 
-Route::middleware('can:user-higher')->group(function () {
-    Route::get('index', function () {
-        dd('user');
+Route::middleware('can:user-higher')
+    ->group(function () {
+        Route::get('/dashboard', [ReservationController::class, 'dashboard'])->name('dashboard');
     });
-});
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified'
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-});
+// Route::middleware([
+//     'auth:sanctum',
+//     config('jetstream.auth_session'),
+//     'verified'
+// ])->group(function () {
+//     Route::get('/dashboard', function () {
+//         return view('dashboard');
+//     })->name('dashboard');
+// });
