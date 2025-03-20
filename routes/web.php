@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\MyPageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +30,14 @@ Route::prefix('manager')
 Route::middleware('can:user-higher')
     ->group(function () {
         Route::get('/dashboard', [ReservationController::class, 'dashboard'])->name('dashboard');
+        Route::get('/mypage', [MyPageController::class, 'index'])->name('mypage.index');
+        Route::get('/mypage/{id}', [MyPageController::class, 'show'])->name('mypage.show');
+        Route::post('/mypage/{id}', [MyPageController::class, 'cancel'])->name('mypage.cancel');
+        // Route::get('/{id}', [ReservationController::class, 'detail'])->name('events.detail');
+        Route::post('/{id}', [ReservationController::class, 'reserve'])->name('events.reserve');
     });
+
+Route::get('/{id}', [ReservationController::class, 'detail'])->name('events.detail');
 
 // Route::middleware([
 //     'auth:sanctum',
