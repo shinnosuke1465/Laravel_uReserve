@@ -15,6 +15,9 @@
                     <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         イベントカレンダー
                     </x-jet-nav-link>
+                    <x-jet-nav-link href="{{ route('mypage.index') }}" :active="request()->routeIs('mypage.index')">
+                        マイページ
+                    </x-jet-nav-link>
                     @can('manager-higher')
                         <x-jet-nav-link href="{{ route('events.index') }}" :active="request()->routeIs('events.index')">
                             イベント管理
